@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>StartupCalculator</key>
+	<string></string>
+	<key>StartupMode</key>
+	<integer>0</integer>
+	<key>RealSpeed</key>
+	<false/>
+	<key>Grayscale</key>
+	<false/>
+	<key>AlwaysOnTop</key>
+	<false/>
+	<key>AutoSaveOnExit</key>
+	<false/>
+	<key>ReloadFiles</key>
+	<false/>
+	<key>LoadObjectWarning</key>
+	<false/>
+	<key>AlwaysDisplayLog</key>
+	<false/>
+	<key>RomWriteable</key>
+	<false/>
+	<key>Mnemonics</key>
+	<integer>0</integer>
+	<key>WaveBeep</key>
+	<integer>1</integer>
+	<key>WaveVolume</key>
+	<real>1</real>
+	<key>Port2IsShared</key>
+	<false/>
+	<key>Port2Filename</key>
+	<string></string>
+</dict>
+</plist>

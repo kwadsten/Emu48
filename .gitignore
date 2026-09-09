@@ -1,0 +1,8 @@
+# emu48.xcodeproj/project.xcworkspace/xcuserdata/
+
+# Block all personal user settings and layout data
+xcuserdata/
+*.bundle/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+
