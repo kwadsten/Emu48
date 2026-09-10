@@ -16,6 +16,8 @@ The goal was not to rewrite Emu48, but to modernize the macOS application layer 
 
 The project was brought forward to build cleanly with a current version of Xcode and the macOS 27 SDK.
 
+Minimum version of macOS is 14.6 (Sonoma).
+
 The work included updating portions of the older AppKit code and project configuration that no longer fit comfortably with the current macOS development environment.
 
 The underlying Emu48 emulation code remains based on the original project.
