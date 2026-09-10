@@ -31,6 +31,7 @@
 		B34B20BE304B11D7007849D7 /* CalcGalleryListItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = B34B20BD304B109E007849D7 /* CalcGalleryListItemView.m */; };
 		B34B20C1304B1E72007849D7 /* CalcGalleryImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = B34B20C0304B1D5C007849D7 /* CalcGalleryImageHelper.m */; };
 		B34B27E0304653BE0033A14B /* CalcGalleryImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = B34B27DF304653BE0033A14B /* CalcGalleryImageView.m */; };
+		B3EF707330522D4500CAF058 /* CalcGalleryWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = B3EF707230522CE200CAF058 /* CalcGalleryWindow.m */; };
 		CE118AA6106249F300983F7E /* ToggleToolbarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CE118AA5106249F300983F7E /* ToggleToolbarItem.m */; };
 		CE1648CC0FCCE1E20059D4E9 /* DISASM.C in Sources */ = {isa = PBXBuildFile; fileRef = E588F46B05E34BE300D6B3EC /* DISASM.C */; };
 		CE4BF5381050ED7A00BE4206 /* CalcDebugPanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4BF5371050ED7A00BE4206 /* CalcDebugPanelController.m */; };
@@ -141,6 +142,8 @@
 		B360EB8C3050BFFA0071E9CE /* Emu48.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Emu48.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3630827302A15A10052EB74 /* MacKeycodes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MacKeycodes.h; sourceTree = "<group>"; };
 		B3630829302A19FA0052EB74 /* CalcScancodes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CalcScancodes.h; sourceTree = "<group>"; };
+		B3EF707130522CC900CAF058 /* CalcGalleryWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CalcGalleryWindow.h; sourceTree = "<group>"; };
+		B3EF707230522CE200CAF058 /* CalcGalleryWindow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CalcGalleryWindow.m; sourceTree = "<group>"; };
 		CE118AA4106249F300983F7E /* ToggleToolbarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToggleToolbarItem.h; sourceTree = "<group>"; };
 		CE118AA5106249F300983F7E /* ToggleToolbarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToggleToolbarItem.m; sourceTree = "<group>"; };
 		CE4BF5361050ED7A00BE4206 /* CalcDebugPanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalcDebugPanelController.h; sourceTree = "<group>"; };
@@ -301,6 +304,8 @@
 				B34B27DF304653BE0033A14B /* CalcGalleryImageView.m */,
 				B34B20BC304B108D007849D7 /* CalcGalleryListItemView.h */,
 				B34B20BD304B109E007849D7 /* CalcGalleryListItemView.m */,
+				B3EF707130522CC900CAF058 /* CalcGalleryWindow.h */,
+				B3EF707230522CE200CAF058 /* CalcGalleryWindow.m */,
 				B3291E9E30509E0800975EE9 /* CalcInfoButton.h */,
 				B3291E9F30509E0800975EE9 /* CalcInfoButton.m */,
 				B34AC8043047A38100572FA4 /* CalcInfoButtonCell.h */,
@@ -538,6 +543,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B3EF707330522D4500CAF058 /* CalcGalleryWindow.m in Sources */,
 				B34A7868304E45E0006801F1 /* CalcGalleryCardItemView.m in Sources */,
 				B34B20C1304B1E72007849D7 /* CalcGalleryImageHelper.m in Sources */,
 				B34B20BE304B11D7007849D7 /* CalcGalleryListItemView.m in Sources */,

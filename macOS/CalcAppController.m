@@ -308,6 +308,25 @@ VOID UpdateWindowStatus(VOID){}
     [kmlMenu setMenuChangedMessagesEnabled: YES];
 }
 
+- (void)setMainMenuEnabled:(BOOL)enabled
+{
+    NSMenu *mainMenu = [NSApp mainMenu];
+
+    if (!mainMenu)
+        return;
+
+    NSInteger i;
+    NSInteger count = [mainMenu numberOfItems];
+
+    for (i = 0; i < count; ++i)
+    {
+        NSMenuItem *item =
+            [mainMenu itemAtIndex:i];
+
+        [item setEnabled:enabled];
+    }
+}
+
 - (BOOL)validateMenuItem:(NSMenuItem *)sender
 {
     if ([sender action] ==
@@ -548,7 +567,7 @@ VOID UpdateWindowStatus(VOID){}
         {
             NSAlert *alert =
                 [[[NSAlert alloc] init] autorelease];
-
+            
             [alert setMessageText:@"Last saved calculator not found"];
 
             NSString *message;
@@ -571,11 +590,32 @@ VOID UpdateWindowStatus(VOID){}
 
             [alert setInformativeText:message];
 
-            [alert addButtonWithTitle:@"Choose Calculator"];
+            NSButton *chooseButton =
+                [alert addButtonWithTitle:@"Choose Calculator"];
 
-            [alert runModal];
+            [alert addButtonWithTitle:@"Cancel"];
 
-            [self showCalculatorGalleryIfNeeded];
+            /*
+             * Choose Calculator is the initial/default button.
+             */
+            [[alert window] setInitialFirstResponder:chooseButton];
+
+            /*
+             * Disable File menu while the alert is displayed.
+             */
+            [self setMainMenuEnabled:NO];
+
+            NSModalResponse response = [alert runModal];
+
+            /*
+             * Restore File menu after the alert closes.
+             */
+            [self setMainMenuEnabled:YES];
+
+            if (response == NSAlertFirstButtonReturn)
+            {
+                [self showCalculatorGalleryIfNeeded];
+            }
         }
 
         /*
@@ -771,6 +811,33 @@ VOID UpdateWindowStatus(VOID){}
     if (document)
     {
         [document setCalculatorInfo:calc];
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSWindowController *controller =
+                [[document windowControllers] firstObject];
+
+            NSWindow *window = [controller window];
+
+            if (!window)
+                return;
+
+            NSScreen *screen = [window screen];
+
+            if (!screen)
+                screen = [NSScreen mainScreen];
+
+            NSRect visibleFrame = [screen visibleFrame];
+            NSRect frame = [window frame];
+
+            frame.origin.x =
+                visibleFrame.origin.x + 50.0;
+
+            frame.origin.y =
+                visibleFrame.origin.y +
+                (visibleFrame.size.height - frame.size.height) / 2.0;
+
+            [window setFrameOrigin:frame.origin];
+        });
     }
     
     if (error)

@@ -594,14 +594,6 @@ CalcDocument *document;
     CalcRect bg = [kml background];
     CalcImage *mainBitmap = [kml mainBitmap];
 
-    if ([aViewContainer respondsToSelector:@selector(setContentSize:)])
-    {
-        // v1.68 changes
-        // KML Background Size defines the emulator window, not the bitmap size.
-        // The bitmap may be wider because it contains annunciator/button source graphics.
-        [aViewContainer setContentSize:bg.size];
-    }
-
     [calcView setMainBitmap:mainBitmap
                    atOrigin:bg.origin
                        size:bg.size];
@@ -632,7 +624,7 @@ CalcDocument *document;
 #else
     [calcView setNeedsDisplay: YES];
 #endif
-
+    
     NSInteger zoomPercent =
         [self validatedUIZoomPercent:[state uiZoomPercent]];
 
@@ -640,14 +632,17 @@ CalcDocument *document;
 
     if (autoFitZoom)
     {
-        [self updateAutoFitZoom];
+        [self updateAutoFitZoomAfterWindowPlacement];
     }
     else
     {
         [self setUIZoomPercent:(CGFloat)zoomPercent];
     }
 
-    [self restoreWindowPosition];
+    /*
+     * Do not restore window position from the .e49 file.
+     * Window position is managed by macOS/AppKit.
+     */
 
     [[NSNotificationCenter defaultCenter]
         addObserver:self
@@ -664,15 +659,14 @@ CalcDocument *document;
     [self setInitDone:YES];
 }
 
-- (void)windowDidChangeScreen:(NSNotification *)notification
+- (void)updateAutoFitZoomAfterWindowPlacement
 {
-    if (!autoFitZoom)
+    if (!autoFitZoom || !viewContainer)
         return;
 
-    if ([notification object] != (NSWindow *)viewContainer)
-        return;
-
-    [self updateAutoFitZoom];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self updateAutoFitZoom];
+    });
 }
 
 - (void)screenParametersChanged:(NSNotification *)notification
@@ -764,8 +758,9 @@ CalcDocument *document;
 
 - (BOOL)saveStateAs:(NSString *)aStateFile error:(NSError **)outError
 {
-    NSWindow *window = (NSWindow *)viewContainer;
-    [state setWindowPosition:[window frame].origin];
+    // macOS will remember window position automatically
+//    NSWindow *window = (NSWindow *)viewContainer;
+//    [state setWindowPosition:[window frame].origin];
 
     return [state saveAs:aStateFile error:outError];
 }
@@ -809,35 +804,57 @@ CalcDocument *document;
     NSScreen *screen = [window screen];
 
     if (!screen)
-        screen = [NSScreen mainScreen];
+    {
+        NSLog(@"Auto Zoom: window has no screen yet");
+        return;
+    }
 
     NSRect visibleFrame = [screen visibleFrame];
-
     NSSize nativeSize = [calcView nativeContentSize];
 
     if (nativeSize.width <= 0.0 || nativeSize.height <= 0.0)
         return;
 
-    /*
-     * Target 80% of the usable screen height.
-     */
     CGFloat targetHeight = visibleFrame.size.height * 0.80;
 
     CGFloat zoom = targetHeight / nativeSize.height;
 
-    /*
-     * Don't allow the calculator to exceed the usable screen width.
-     */
     CGFloat maxWidthZoom =
         visibleFrame.size.width / nativeSize.width;
 
     if (zoom > maxWidthZoom)
         zoom = maxWidthZoom;
 
-    /*
-     * Apply the calculated zoom only.
-     * The saved zoom setting remains -1 (AutoFit).
-     */
+//    NSLog(@"Auto Zoom BEFORE: %@",
+//          NSStringFromRect([window frame]));
+
+    [self setUIZoomPercent:zoom * 100.0];
+
+//    NSLog(@"Auto Zoom AFTER: %@",
+//          NSStringFromRect([window frame]));
+}
+
+- (void)updateAutoFitZoomForScreen:(NSScreen *)screen
+{
+    if (!autoFitZoom || !viewContainer || !calcView || !screen)
+        return;
+
+    NSRect visibleFrame = [screen visibleFrame];
+    NSSize nativeSize = [calcView nativeContentSize];
+
+    if (nativeSize.width <= 0.0 || nativeSize.height <= 0.0)
+        return;
+
+    CGFloat targetHeight = visibleFrame.size.height * 0.80;
+
+    CGFloat zoom = targetHeight / nativeSize.height;
+
+    CGFloat maxWidthZoom =
+        visibleFrame.size.width / nativeSize.width;
+
+    if (zoom > maxWidthZoom)
+        zoom = maxWidthZoom;
+
     [self setUIZoomPercent:zoom * 100.0];
 }
 
@@ -873,97 +890,15 @@ CalcDocument *document;
     return autoFitZoom;
 }
 
-- (void)restoreWindowPosition
+- (void)windowDidChangeScreen:(NSNotification *)notification
 {
-    if (!viewContainer || ![state hasWindowPosition])
+    if (!autoFitZoom)
         return;
 
-    NSWindow *window = (NSWindow *)viewContainer;
-    NSRect windowFrame = [window frame];
-
-    NSPoint savedOrigin = [state windowPosition];
-
-    /*
-     * Reconstruct the saved window rectangle using its current size.
-     */
-    NSRect savedFrame =
-        NSMakeRect(savedOrigin.x,
-                   savedOrigin.y,
-                   windowFrame.size.width,
-                   windowFrame.size.height);
-
-    NSPoint savedCenter =
-        NSMakePoint(NSMidX(savedFrame),
-                   NSMidY(savedFrame));
-
-    NSArray *screens = [NSScreen screens];
-
-    NSScreen *bestScreen = nil;
-    CGFloat bestDistance = CGFLOAT_MAX;
-
-    /*
-     * Find the screen whose visible frame is closest to the
-     * center of the saved window.
-     */
-    for (NSScreen *screen in screens)
-    {
-        NSRect visibleFrame = [screen visibleFrame];
-
-        CGFloat dx = 0.0;
-        CGFloat dy = 0.0;
-
-        if (savedCenter.x < NSMinX(visibleFrame))
-            dx = NSMinX(visibleFrame) - savedCenter.x;
-        else if (savedCenter.x > NSMaxX(visibleFrame))
-            dx = savedCenter.x - NSMaxX(visibleFrame);
-
-        if (savedCenter.y < NSMinY(visibleFrame))
-            dy = NSMinY(visibleFrame) - savedCenter.y;
-        else if (savedCenter.y > NSMaxY(visibleFrame))
-            dy = savedCenter.y - NSMaxY(visibleFrame);
-
-        CGFloat distance = (dx * dx) + (dy * dy);
-
-        if (bestScreen == nil || distance < bestDistance)
-        {
-            bestScreen = screen;
-            bestDistance = distance;
-        }
-    }
-
-    if (!bestScreen)
+    if ([notification object] != (NSWindow *)viewContainer)
         return;
 
-    NSRect visibleFrame = [bestScreen visibleFrame];
-
-    /*
-     * Keep at least 100 points of the window visible.
-     */
-    CGFloat minVisibleX =
-        NSMinX(visibleFrame) - windowFrame.size.width + 100.0;
-
-    CGFloat maxVisibleX =
-        NSMaxX(visibleFrame) - 100.0;
-
-    CGFloat minVisibleY =
-        NSMinY(visibleFrame) - windowFrame.size.height + 100.0;
-
-    CGFloat maxVisibleY =
-        NSMaxY(visibleFrame) - 100.0;
-
-    NSPoint origin = savedOrigin;
-
-    if (origin.x < minVisibleX)
-        origin.x = minVisibleX;
-    else if (origin.x > maxVisibleX)
-        origin.x = maxVisibleX;
-
-    if (origin.y < minVisibleY)
-        origin.y = minVisibleY;
-    else if (origin.y > maxVisibleY)
-        origin.y = maxVisibleY;
-
-    [window setFrameOrigin:origin];
+    [self updateAutoFitZoom];
 }
 
 - (void)keepWindowFullyVisible
@@ -1098,17 +1033,56 @@ CalcDocument *document;
     if (percent <= 0)
         percent = 100.0;
 
+    NSWindow *window = nil;
+
+    if (viewContainer &&
+        [viewContainer isKindOfClass:[NSWindow class]])
+    {
+        window = (NSWindow *)viewContainer;
+    }
+
+    NSRect oldFrame = NSZeroRect;
+
+    if (window)
+        oldFrame = [window frame];
+
     [calcView setUIZoomPercent:percent];
 
-    if ([viewContainer respondsToSelector:@selector(setContentSize:)])
+    if (window)
     {
-        [viewContainer setContentSize:[calcView zoomedContentSize]];
+        [window setContentSize:[calcView zoomedContentSize]];
+
+        /*
+         * Keep the top edge fixed when the content size changes.
+         * This prevents Auto Zoom from moving the restored window
+         * vertically.
+         */
+        NSRect newFrame = [window frame];
+
+        newFrame.origin.y =
+            NSMaxY(oldFrame) - newFrame.size.height;
+
+        [window setFrameOrigin:newFrame.origin];
     }
 }
 
 - (CGFloat)uiZoomPercent
 {
     return [calcView uiZoom] * 100.0;
+}
+
+// Primary display contains point 0,0.  It is *not* the display with the current menu bar.
+- (NSScreen *)primaryDisplay
+{
+    NSPoint origin = NSMakePoint(0.0, 0.0);
+
+    for (NSScreen *screen in [NSScreen screens])
+    {
+        if (NSPointInRect(origin, [screen frame]))
+            return screen;
+    }
+
+    return [NSScreen mainScreen];
 }
 
 @end

@@ -521,13 +521,28 @@ void (*shouldCloseDispatcher)(id, SEL, NSDocument *, BOOL, void *) =
 {
     [super windowControllerDidLoadNib:controller];
 
+    NSWindow *window = [controller window];
+
+    NSString *autosaveName = [[self fileURL] path];
+
+    if (!autosaveName)
+        autosaveName = @"CalculatorWindow";
+
+    [window setFrameAutosaveName:autosaveName];
+
     CalcBackend *backend = [CalcBackend sharedBackend];
 
     [backend setDocument:self];
 
     [backend setCalcView:calcView];
-    [backend finishInitWithViewContainer:[controller window]
+//    NSLog(@"BEFORE backend init: %@",
+//          NSStringFromRect([window frame]));
+
+    [backend finishInitWithViewContainer:window
                                 lcdClass:[CalcRawLCD class]];
+
+//    NSLog(@"AFTER backend init: %@",
+//          NSStringFromRect([window frame]));
 
     if ([backend initDone])
     {

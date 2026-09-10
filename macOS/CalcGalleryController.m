@@ -9,6 +9,7 @@
 #import "CalcGalleryCardItemView.h"
 #import "CalcGalleryCollectionView.h"
 #import "CalcGalleryImageHelper.h"
+#import "CalcGalleryWindow.h"
 
 static NSString * const kCalcGalleryViewModePreference =
     @"CalcGalleryViewMode";
@@ -29,14 +30,15 @@ static const CGFloat kGalleryButtonSpacing = 20.0;
 
 - (id)initWithCalcManager:(CalcManager *)aManager
 {
-    NSWindow *window =
-        [[NSWindow alloc]
+    CalcGalleryWindow *window =
+        [[CalcGalleryWindow alloc]
             initWithContentRect:NSMakeRect(0, 0, kGalleryWindowWidth, kGalleryWindowHeight)
                       styleMask:(NSWindowStyleMaskTitled |
                                  NSWindowStyleMaskClosable)
                         backing:NSBackingStoreBuffered
                           defer:NO];
 
+    [window setCancelTarget:self];
     [window setDelegate:self];
 
     self = [super initWithWindow:window];
@@ -270,13 +272,6 @@ static const CGFloat kGalleryButtonSpacing = 20.0;
     [super dealloc];
 }
 
-
-- (void)cancelOperation:(id)sender
-{
-    [self cancelGallery:sender];
-}
-
-
 - (void)setActionButtonTitle:(NSString *)title
 {
     [actionButton setTitle:title];
@@ -285,6 +280,9 @@ static const CGFloat kGalleryButtonSpacing = 20.0;
 
 - (void)showGallery
 {
+    
+    [calcManager refreshCalculators:nil];
+    
     [self updateGalleryLayout];
 
     [calculatorsView reloadData];
