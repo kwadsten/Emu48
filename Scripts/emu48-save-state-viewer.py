@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-dump_e48.py - decode the readable state in an Emu48 .e48/.e49 file.
+emu48-save-state-viewer.py - decode the readable state in an Emu48 .e48/.e49 file.
 
 The parser supports:
   * the older 8648-byte Chipset_t found in older Emu48 state files

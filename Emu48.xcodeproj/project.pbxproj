@@ -31,6 +31,8 @@
 		B34B20BE304B11D7007849D7 /* CalcGalleryListItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = B34B20BD304B109E007849D7 /* CalcGalleryListItemView.m */; };
 		B34B20C1304B1E72007849D7 /* CalcGalleryImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = B34B20C0304B1D5C007849D7 /* CalcGalleryImageHelper.m */; };
 		B34B27E0304653BE0033A14B /* CalcGalleryImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = B34B27DF304653BE0033A14B /* CalcGalleryImageView.m */; };
+		B37266D43054B7C50059222A /* emu48-save-state-viewer.py in Resources */ = {isa = PBXBuildFile; fileRef = B37266D23054B7C50059222A /* emu48-save-state-viewer.py */; };
+		B37266D53054B7DB0059222A /* emu48-save-state-viewer.py in CopyFiles */ = {isa = PBXBuildFile; fileRef = B37266D23054B7C50059222A /* emu48-save-state-viewer.py */; };
 		B3EF707330522D4500CAF058 /* CalcGalleryWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = B3EF707230522CE200CAF058 /* CalcGalleryWindow.m */; };
 		CE118AA6106249F300983F7E /* ToggleToolbarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CE118AA5106249F300983F7E /* ToggleToolbarItem.m */; };
 		CE1648CC0FCCE1E20059D4E9 /* DISASM.C in Sources */ = {isa = PBXBuildFile; fileRef = E588F46B05E34BE300D6B3EC /* DISASM.C */; };
@@ -97,6 +99,19 @@
 		};
 /* End PBXBuildRule section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		B37266D13054B7970059222A /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Scripts;
+			dstSubfolderSpec = 7;
+			files = (
+				B37266D53054B7DB0059222A /* emu48-save-state-viewer.py in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		2A37F4B0FDCFA73011CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -142,6 +157,7 @@
 		B360EB8C3050BFFA0071E9CE /* Emu48.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Emu48.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3630827302A15A10052EB74 /* MacKeycodes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MacKeycodes.h; sourceTree = "<group>"; };
 		B3630829302A19FA0052EB74 /* CalcScancodes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CalcScancodes.h; sourceTree = "<group>"; };
+		B37266D23054B7C50059222A /* emu48-save-state-viewer.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "emu48-save-state-viewer.py"; sourceTree = "<group>"; };
 		B3EF707130522CC900CAF058 /* CalcGalleryWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CalcGalleryWindow.h; sourceTree = "<group>"; };
 		B3EF707230522CE200CAF058 /* CalcGalleryWindow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CalcGalleryWindow.m; sourceTree = "<group>"; };
 		CE118AA4106249F300983F7E /* ToggleToolbarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToggleToolbarItem.h; sourceTree = "<group>"; };
@@ -271,6 +287,7 @@
 				E588F4A605E34C8200D6B3EC /* MacTranslationLayer */,
 				2A37F4ABFDCFA73011CA2CEA /* macOS */,
 				2A37F4B8FDCFA73011CA2CEA /* Resources */,
+				B37266D33054B7C50059222A /* Scripts */,
 				2A37F4C3FDCFA73011CA2CEA /* Frameworks */,
 				19C28FB0FE9D524F11CA2CBB /* Products */,
 			);
@@ -364,6 +381,14 @@
 				1058C7A6FEA54F5311CA2CBB /* Linked Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B37266D33054B7C50059222A /* Scripts */ = {
+			isa = PBXGroup;
+			children = (
+				B37266D23054B7C50059222A /* emu48-save-state-viewer.py */,
+			);
+			path = Scripts;
 			sourceTree = "<group>";
 		};
 		E588F46305E34BE300D6B3EC /* EmuCore */ = {
@@ -463,6 +488,7 @@
 				E5B21D050728F2370095F171 /* Resources */,
 				E5B21D160728F2370095F171 /* Sources */,
 				E5B21D290728F2370095F171 /* Frameworks */,
+				B37266D13054B7970059222A /* CopyFiles */,
 			);
 			buildRules = (
 				E5B21D2D0728F2370095F171 /* PBXBuildRule */,
@@ -511,6 +537,7 @@
 				B3291EB63050A05900975EE9 /* InfoPlist.strings in Resources */,
 				B3291EB73050A05900975EE9 /* MainMenu.xib in Resources */,
 				B3291EB83050A05900975EE9 /* Localizable.strings in Resources */,
+				B37266D43054B7C50059222A /* emu48-save-state-viewer.py in Resources */,
 				B3291EB93050A05900975EE9 /* CalcWindow.xib in Resources */,
 				B3291EBA3050A05900975EE9 /* defaults.plist in Resources */,
 				B3291EBB3050A05900975EE9 /* KmlLogWindow.xib in Resources */,
