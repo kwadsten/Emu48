@@ -25,8 +25,6 @@ extern BOOL IsDataPacked(VOID *pMem, DWORD dwSize);
 {
     KmlParseResult *kml;
     int32_t uiZoomPercent;
-    NSPoint windowPosition;
-    BOOL hasWindowPosition;
     NSDictionary *calculatorInfo;
 }
 - (id)initWithKml:(NSString *)kmlPath error:(NSError **)outError;
@@ -36,9 +34,6 @@ extern BOOL IsDataPacked(VOID *pMem, DWORD dwSize);
 - (KmlParseResult *)kml;
 - (int32_t)uiZoomPercent;
 - (void)setUIZoomPercent:(int32_t)percent;
-- (BOOL)hasWindowPosition;
-- (NSPoint)windowPosition;
-- (void)setWindowPosition:(NSPoint)position;
 - (NSDictionary *)calculatorInfo;
 - (void)setCalculatorInfo:(NSDictionary *)info;
 @end

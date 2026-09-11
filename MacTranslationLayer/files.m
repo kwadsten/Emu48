@@ -34,8 +34,6 @@ typedef struct
 {
     uint32_t version;
     int32_t  zoomPercent;
-    int32_t  windowX;
-    int32_t  windowY;
 } E48UISettings;
 
 // Optional settings for calc (kml) info button
@@ -1097,9 +1095,6 @@ BOOL SaveObject(LPCTSTR szFilename)			// separated stack reading part
                     (settings.zoomPercent == -1 || settings.zoomPercent > 0))
                 {
                     uiZoomPercent = settings.zoomPercent;
-                    windowPosition = NSMakePoint(settings.windowX,
-                                                 settings.windowY);
-                    hasWindowPosition = YES;
                 }
             }
         }
@@ -1330,8 +1325,6 @@ restore:
 
         settings.version = E48_UI_SETTINGS_VERSION;
         settings.zoomPercent = uiZoomPercent;
-        settings.windowX = (int32_t)windowPosition.x;
-        settings.windowY = (int32_t)windowPosition.y;
         
         write(hFile,
               e48UISettingsMagic,
@@ -1407,22 +1400,6 @@ restore:
 {
     [calculatorInfo release];
     calculatorInfo = [info retain];
-}
-
-- (NSPoint)windowPosition
-{
-    return windowPosition;
-}
-
-- (void)setWindowPosition:(NSPoint)position
-{
-    windowPosition = position;
-    hasWindowPosition = YES;
-}
-
-- (BOOL)hasWindowPosition
-{
-    return hasWindowPosition;
 }
 
 @end

@@ -759,9 +759,6 @@ CalcDocument *document;
 - (BOOL)saveStateAs:(NSString *)aStateFile error:(NSError **)outError
 {
     // macOS will remember window position automatically
-//    NSWindow *window = (NSWindow *)viewContainer;
-//    [state setWindowPosition:[window frame].origin];
-
     return [state saveAs:aStateFile error:outError];
 }
 
